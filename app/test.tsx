@@ -1,6 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { FlashList } from '@shopify/flash-list'
 
 export default function Index() {
   const [text, setText] = useState('')
@@ -39,6 +40,17 @@ export default function Index() {
       </View>
       <View>
         <Text>Some non-flex text</Text>
+        <FlashList
+          data={[
+            {
+              title: 'item 1'
+            },
+            {
+              title: 'item 2'
+            }
+          ]}
+          renderItem={({item}) => (<Text>{item.title}</Text>)}
+        />
       </View>
     </View>
   )
