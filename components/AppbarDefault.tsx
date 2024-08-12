@@ -1,9 +1,8 @@
-import { DrawerHeaderProps } from "@react-navigation/drawer"
+import { DrawerHeaderProps } from "@react-navigation/drawer";
 import { getHeaderTitle } from '@react-navigation/elements'
-import { useState } from "react";
-import { Appbar, Icon, IconButton } from 'react-native-paper'
+import { Appbar, IconButton } from "react-native-paper";
 
-function AppBarDrawer(props: DrawerHeaderProps) {
+function AppbarDefault(props: DrawerHeaderProps) {
   const title = getHeaderTitle(props.options, props.route.name);
 
   return (
@@ -15,5 +14,5 @@ function AppBarDrawer(props: DrawerHeaderProps) {
 }
 
 export {
-  AppBarDrawer
+  AppbarDefault
 }
