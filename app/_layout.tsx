@@ -1,9 +1,9 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { Drawer as NavDrawer } from 'expo-router/drawer'
-import { Drawer } from '@/components/Drawer'
+import { Drawer } from '@/components/nav/Drawer'
 import { PaperProvider, MD3DarkTheme, Icon } from 'react-native-paper'
-import { AppbarDefault } from "@/components/AppbarDefault"
-import { AppbarManga } from "@/components/AppbarManga"
+import { AppbarDefaultDrawer } from "@/components/nav/AppbarDefaultDrawer"
+import { AppbarManga } from "@/components/nav/AppbarManga"
 
 const theme = {
   ...MD3DarkTheme
@@ -13,7 +13,7 @@ export default function RootLayout() {
   return (
     <PaperProvider theme={theme}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <NavDrawer screenOptions={{header: (props) => (<AppbarDefault {...props} />)}} drawerContent={(props) => (<Drawer {...props} />)}>
+        <NavDrawer screenOptions={{header: (props) => (<AppbarDefaultDrawer {...props} />)}} drawerContent={(props) => (<Drawer {...props} />)}>
           <NavDrawer.Screen
             name="index"
             options={{
@@ -28,7 +28,7 @@ export default function RootLayout() {
               drawerLabel: 'Manga',
               title: "Manga",
               drawerIcon: (props) => <Icon size={props.size} source="book" />,
-              header: (props) => <AppbarManga {...props} />
+              headerShown: false
             }}
           />
           <NavDrawer.Screen

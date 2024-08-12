@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 
-export default function Add() {
+export default function Search() {
   return (
     <View>
-      <Text>Hello add</Text>
+      <Text>Hello search</Text>
     </View>
   )
 }
