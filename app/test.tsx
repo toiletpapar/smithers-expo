@@ -7,11 +7,8 @@ export default function Index() {
   const [text, setText] = useState('')
 
   return (
-    <View style={{flex: 0.75}}>
+    <View style={{flex: 1}}>
       <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start'}}>
-        <Text>More Text</Text>
-        <Text>More Text</Text>
-        <Text>More Text</Text>
         <Text>More Text</Text>
         <Text>More Text</Text>
         <Text>More Text</Text>
@@ -38,7 +35,7 @@ export default function Index() {
           placeholder='test'
         />
       </View>
-      <View>
+      <View style={{flex: 1}}>
         <Text>Some non-flex text</Text>
         <FlashList
           data={[
@@ -49,6 +46,7 @@ export default function Index() {
               title: 'item 2'
             }
           ]}
+          estimatedItemSize={47}
           renderItem={({item}) => (<Text>{item.title}</Text>)}
         />
       </View>

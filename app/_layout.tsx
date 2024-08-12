@@ -1,9 +1,11 @@
 import { Stack } from "expo-router";
 import { Text } from 'react-native';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Drawer } from 'expo-router/drawer'
-import { PaperProvider, MD3DarkTheme, Appbar } from 'react-native-paper'
+import { Drawer as NavDrawer } from 'expo-router/drawer'
+import { Drawer } from '@/components/Drawer'
+import { PaperProvider, MD3DarkTheme, Appbar, Icon } from 'react-native-paper'
 import { getHeaderTitle } from '@react-navigation/elements'
+import { AppBarDrawer } from "@/components/AppbarDrawer";
 
 const theme = {
   ...MD3DarkTheme
@@ -13,39 +15,32 @@ export default function RootLayout() {
   return (
     <PaperProvider theme={theme}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <Drawer screenOptions={{header: (props) => {
-          console.log(props)
-
-          const title = getHeaderTitle(props.options, props.route.name);
-
-          return (
-            <Appbar.Header>
-              <Appbar.Content title={title} />
-            </Appbar.Header>
-          )
-        }}}>
-          <Drawer.Screen
+        <NavDrawer screenOptions={{header: (props) => (<AppBarDrawer {...props} />)}} drawerContent={(props) => (<Drawer {...props} />)}>
+          <NavDrawer.Screen
             name="index"
             options={{
               drawerLabel: 'Home',
               title: "Home",
+              drawerIcon: (props) => <Icon size={props.size} source="home" />
             }}
           />
-          <Drawer.Screen
+          <NavDrawer.Screen
             name="manga/index"
             options={{
               drawerLabel: 'Manga',
               title: "Manga",
+              drawerIcon: (props) => <Icon size={props.size} source="book" />
             }}
           />
-          <Drawer.Screen
+          <NavDrawer.Screen
             name="test"
             options={{
               drawerLabel: 'Test',
-              title: "Test"
+              title: "Test",
+              drawerIcon: (props) => <Icon size={props.size} source="beaker" />
             }}
           />
-        </Drawer>
+        </NavDrawer>
       </GestureHandlerRootView>
     </PaperProvider>
   );
