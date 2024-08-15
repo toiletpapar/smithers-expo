@@ -4,42 +4,69 @@ import { Drawer } from '@/components/nav/Drawer'
 import { PaperProvider, MD3DarkTheme, Icon } from 'react-native-paper'
 import { AppbarDefaultDrawer } from "@/components/nav/AppbarDefaultDrawer"
 import { AppbarManga } from "@/components/nav/AppbarManga"
+import { User } from "@/models/User"
+import { useEffect, useState } from "react"
+import { SessionService, SessionContext } from "@/hooks/useSession"
+import { Session as SessionData } from "@/models/Session"
+import { Slot, SplashScreen, Stack } from "expo-router"
+import { Splash } from "@/components/Splash"
+import * as SecureStore from 'expo-secure-store'
+import { LoginOptions, SessionClientRepository } from "@/repositories/SessionClientRepository"
 
 const theme = {
   ...MD3DarkTheme
 }
 
 export default function RootLayout() {
+  const [session, setSession] = useState<SessionData | null>(null)
+  const [isSessionLoading, setIsSessionLoading] = useState<boolean>(false)
+
+  const sessionService = {
+    session: session,
+    initialize: async () => {
+      try {
+        setIsSessionLoading(true)
+        const session = await SessionClientRepository.initializeSession()
+
+        if (session) {
+          setSession(session)
+        }
+
+        setIsSessionLoading(false)
+      } catch (err) {
+        console.error(err)
+        setIsSessionLoading(false)
+        setSession(null)
+      }
+    },
+    login: async (options: LoginOptions) => {
+      try {
+        setIsSessionLoading(true)
+        const session = await SessionClientRepository.login(options)
+        setSession(session)
+        setIsSessionLoading(false)
+      } catch (err) {
+        console.error(err)
+        setIsSessionLoading(false)
+      }
+    },
+    logout: async () => {
+      try {
+        await SessionClientRepository.logout()
+        setSession(null)
+      } catch (err) {
+        console.error(err)
+      }
+    },
+    isLoading: isSessionLoading,
+  }
+
   return (
     <PaperProvider theme={theme}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <NavDrawer screenOptions={{header: (props) => (<AppbarDefaultDrawer {...props} />)}} drawerContent={(props) => (<Drawer {...props} />)}>
-          <NavDrawer.Screen
-            name="index"
-            options={{
-              drawerLabel: 'Home',
-              title: "Home",
-              drawerIcon: (props) => <Icon size={props.size} source="home" />,
-            }}
-          />
-          <NavDrawer.Screen
-            name="manga"
-            options={{
-              drawerLabel: 'Manga',
-              title: "Manga",
-              drawerIcon: (props) => <Icon size={props.size} source="book" />,
-              headerShown: false
-            }}
-          />
-          <NavDrawer.Screen
-            name="test"
-            options={{
-              drawerLabel: 'Test',
-              title: "Test",
-              drawerIcon: (props) => <Icon size={props.size} source="beaker" />
-            }}
-          />
-        </NavDrawer>
+        <SessionContext.Provider value={sessionService}>
+          <Slot />
+        </SessionContext.Provider>
       </GestureHandlerRootView>
     </PaperProvider>
   );

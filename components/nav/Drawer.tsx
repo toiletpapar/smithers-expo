@@ -1,16 +1,20 @@
 import { DrawerContentComponentProps, DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer"
-import { Surface, Drawer as PaperDrawer } from 'react-native-paper'
+import { Surface, Drawer as PaperDrawer, Button } from 'react-native-paper'
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Text } from "react-native-paper"
 
-function Drawer(props: DrawerContentComponentProps) {
+interface DrawerProps extends DrawerContentComponentProps {
+  onLogout: () => Promise<void>
+}
+
+function Drawer(props: DrawerProps) {
   const routes = props.state.routes.filter((route) => {
     // Filter out expo default routes
     return route.name !== '_sitemap' && route.name !== '+not-found'
   })
 
   return (
-    <Surface style={{flex: 1}}>
+    <Surface style={{flex: 1, justifyContent: 'space-between', paddingBottom: 24}}>
       <SafeAreaView>
         {
           routes.map((route) => {
@@ -21,14 +25,15 @@ function Drawer(props: DrawerContentComponentProps) {
                 key={route.key}
                 label={options.title as string}
                 onPress={() => props.navigation.navigate(props.descriptors[route.key].route.name)}
-                icon={(props) => {
-                  return options.drawerIcon && <options.drawerIcon focused={false} {...props} />
+                icon={(iconProps) => {
+                  return options.drawerIcon && <options.drawerIcon focused={false} {...iconProps} />
                 }}
               />
             )
           })
         }
       </SafeAreaView>
+      <Button mode="outlined" style={{marginHorizontal: 24}} onPress={props.onLogout}>Logout</Button>
     </Surface>
   )
 }
