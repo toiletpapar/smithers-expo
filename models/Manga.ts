@@ -1,14 +1,8 @@
-interface IMangaUpdate {
-  chapter: number,
-  chapterName: string | null,
-  isRead: boolean,
-  readAt: string,
-  dateCreated: Date
-}
+import { IMangaUpdate, MangaUpdate } from "./MangaUpdate"
 
 interface IManga {
   manga: {
-    coverImage: Blob | null,
+    crawlTargetId: number,
     coverFormat: string | null,
     name: string,
     favourite: boolean,
@@ -26,31 +20,35 @@ class Manga {
     this.data = data
   }
 
-  static fromResponse (data: any) {
+  static fromResponse (data: any): Manga {
     return new Manga({
       manga: {
+        crawlTargetId: data.crawler.crawlTargetId,
         name: data.crawler.name,
         favourite: data.crawler.favourite,
         url: data.crawler.url,
         adapter: data.crawler.adapter,
         crawlSuccess: data.crawler.crawlSuccess,
-        coverImage: null,
         coverFormat: data.crawler.coverFormat
       },
       mangaUpdates: data.mangaUpdates.map((update: any) => {
-        return {
-          chapter: update.chapter,
-          chapterName: update.chapterName,
-          isRead: update.isRead,
-          readAt: update.readAt,
-          dateCreated: new Date(update.dateCreated)
-        }
+        return MangaUpdate.fromResponse(update).data
       })
     })
   }
 
-  getLatestChapter() {
-    
+  getLatestChapter(): MangaUpdate | null {
+    const mangaUpdate = this.data.mangaUpdates.slice().sort((a, b) => {
+      if (a.dateCreated.valueOf() < b.dateCreated.valueOf()) {
+        return 1
+      } else if (a.dateCreated.valueOf() > b.dateCreated.valueOf()) {
+        return -1
+      } else {
+        return 0
+      }
+    })[0]
+
+    return mangaUpdate ? new MangaUpdate(mangaUpdate) : null
   }
 }
 
