@@ -1,3 +1,11 @@
+interface IMangaUpdate {
+  chapter: number,
+  chapterName: string | null,
+  isRead: boolean,
+  readAt: string,
+  dateCreated: Date
+}
+
 interface IManga {
   manga: {
     coverImage: Blob | null,
@@ -8,13 +16,7 @@ interface IManga {
     adapter: string,
     crawlSuccess: boolean | null
   }
-  mangaUpdates: {
-    chapter: number,
-    chapterName: string | null,
-    isRead: boolean,
-    readAt: string,
-    dateCreated: Date
-  }[]
+  mangaUpdates: IMangaUpdate[]
 }
 
 class Manga {
@@ -45,6 +47,10 @@ class Manga {
         }
       })
     })
+  }
+
+  getLatestChapter() {
+    
   }
 }
 
