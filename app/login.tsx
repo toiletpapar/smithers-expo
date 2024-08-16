@@ -1,7 +1,7 @@
 import { SessionClientRepository } from "@/repositories/SessionClientRepository";
 import { useState } from "react";
 import { View, Text, NativeSyntheticEvent, TextInputKeyPressEventData, TextInputChangeEventData } from "react-native";
-import { Button, IconButton, Surface, TextInput, Title } from "react-native-paper";
+import { Avatar, Button, Card, IconButton, Surface, TextInput, Title } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as SecureStore from 'expo-secure-store'
 import { useSession } from "@/hooks/useSession";
@@ -33,7 +33,7 @@ export default function Login() {
         router.replace('/')
       }
     } catch (err) {
-      console.error(err)
+      
     }
   }
 
@@ -41,10 +41,18 @@ export default function Login() {
     <Surface style={{flex: 1, justifyContent: 'center'}}>
       <View style={{marginTop: -insets.top, padding: 40}}>
         <Title style={{textAlign: 'center', paddingVertical: 10}}>Smithers</Title>
+        {
+          sessionService?.hasError && (
+            <Card elevation={2} style={{marginVertical: 10}}>
+              <Card.Title title="Unauthorized" subtitle="Username/Password is incorrect" left={({size}) => <Avatar.Icon size={size} icon="alert-octagon" />} />
+            </Card>
+          )
+        }
         <TextInput
           placeholder="Username"
           onChangeText={handleUsernameChangeText}
           value={username}
+          error={sessionService?.hasError}
         />
         <TextInput
           placeholder="Password"
@@ -53,6 +61,7 @@ export default function Login() {
           onChangeText={handlePasswordChangeText}
           secureTextEntry={!showPassword}
           value={password}
+          error={sessionService?.hasError}
         />
         <Button mode="contained" style={{borderRadius: 8}} onPress={handleLoginPress}>Login</Button>
       </View>

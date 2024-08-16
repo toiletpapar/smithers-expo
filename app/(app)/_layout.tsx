@@ -15,15 +15,7 @@ import { LoginOptions } from "@/repositories/SessionClientRepository"
 export default function AppLayout() {
   const sessionService = useSession()
 
-  useEffect(() => {
-    const fn = async () => {
-      await sessionService?.initialize()
-    }
-
-    fn()
-  }, [])
-
-  if (!sessionService || sessionService.isLoading) {
+  if (!sessionService || sessionService.isInitializing) {
     return (
       <Splash />
     )

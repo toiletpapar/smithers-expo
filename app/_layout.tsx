@@ -19,47 +19,54 @@ const theme = {
 
 export default function RootLayout() {
   const [session, setSession] = useState<SessionData | null>(null)
-  const [isSessionLoading, setIsSessionLoading] = useState<boolean>(false)
+  const [isInitializing, setIsInitializing] = useState<boolean>(false)
+  const [hasAuthError, setHasAuthError] = useState<boolean>(false)
 
   const sessionService = {
     session: session,
     initialize: async () => {
-      try {
-        setIsSessionLoading(true)
-        const session = await SessionClientRepository.initializeSession()
+      setIsInitializing(true)
+      const session = await SessionClientRepository.initializeSession()
 
-        if (session) {
-          setSession(session)
-        }
-
-        setIsSessionLoading(false)
-      } catch (err) {
-        console.error(err)
-        setIsSessionLoading(false)
-        setSession(null)
+      if (session) {
+        setSession(session)
       }
+
+      setIsInitializing(false)
     },
     login: async (options: LoginOptions) => {
       try {
-        setIsSessionLoading(true)
         const session = await SessionClientRepository.login(options)
         setSession(session)
-        setIsSessionLoading(false)
+        setHasAuthError(false)
       } catch (err) {
-        console.error(err)
-        setIsSessionLoading(false)
+        setHasAuthError(true)
+
+        throw err
       }
     },
     logout: async () => {
       try {
         await SessionClientRepository.logout()
         setSession(null)
+        setHasAuthError(false)
       } catch (err) {
-        console.error(err)
+        setHasAuthError(true)
+
+        throw err
       }
     },
-    isLoading: isSessionLoading,
+    isInitializing,
+    hasError: hasAuthError
   }
+
+  useEffect(() => {
+    const fn = async () => {
+      await sessionService?.initialize()
+    }
+
+    fn()
+  }, [])
 
   return (
     <PaperProvider theme={theme}>

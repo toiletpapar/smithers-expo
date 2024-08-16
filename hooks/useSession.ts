@@ -7,7 +7,8 @@ interface SessionService {
   initialize: () => Promise<void>,
   login: (options: LoginOptions) => Promise<void>,
   logout: () => Promise<void>,
-  isLoading: boolean,
+  isInitializing: boolean,
+  hasError: boolean
 }
 
 const SessionContext = createContext<SessionService | null>(null)
