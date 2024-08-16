@@ -5,6 +5,7 @@ import { useState } from "react"
 import { DateTime } from "luxon"
 import { MangaClientRepository } from "@/repositories/MangaClientRepository"
 import { openURL } from "expo-linking"
+import { Link, router, useNavigation } from "expo-router"
 
 interface MangaCardProps {
   manga: Manga
@@ -18,19 +19,25 @@ function MangaCard(props: MangaCardProps) {
 
   const latestChapter = props.manga.getLatestChapter()
   const title = props.manga.data.manga.name
-  const chapterName = `Chapter ${props.manga.data.mangaUpdates[0].chapter}`
+
+  const navigateToEdit = () => {
+    router.navigate({
+      pathname: '/(app)/manga/edit/[crawlTargetId]',
+      params: { crawlTargetId: props.manga.data.manga.crawlTargetId }
+    })
+  }
 
   return (
     <Card style={{marginTop: 10, marginBottom: 10, marginHorizontal: 5, backgroundColor: theme.colors.elevation.level2}} elevation={2}>
       <Card.Title
-        title={`${title}, ${chapterName}`}
+        title={latestChapter ? `${title}, Chapter ${latestChapter.data.chapter}` : title}
         subtitle={latestChapter && DateTime.fromJSDate(latestChapter.data.dateCreated).toFormat('ccc, MMM dd, yyyy')}
         left={({size}) => <Image style={{width: size, height: size}} source={{uri: `${process.env.EXPO_PUBLIC_API_URL}/api/v1/crawl-targets/${props.manga.data.manga.crawlTargetId}/cover`}} />}
       />
       <Card.Actions>
         <IconButton icon="delete" />
         <IconButton icon="sync" onPress={() => props.onSync(props.manga.data.manga.crawlTargetId, props.manga.data.manga.name)} />
-        <IconButton icon="book-edit" />
+        <IconButton icon="book-edit" onPress={navigateToEdit} />
         <IconButton
           icon={props.manga.data.manga.favourite ? "heart" : "heart-outline"}
           onPress={() => props.onFavouritePress(props.manga.data.manga.crawlTargetId, !props.manga.data.manga.favourite, props.manga.data.manga.name)}

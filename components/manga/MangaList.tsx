@@ -5,6 +5,7 @@ import { Manga } from "@/models/Manga"
 import { useEffect, useState } from "react"
 import { MangaClientRepository } from "@/repositories/MangaClientRepository"
 import { openURL } from "expo-linking"
+import { useFocusEffect } from "expo-router"
 
 interface MangaListProps {
 
@@ -24,13 +25,13 @@ function MangaList(props: MangaListProps) {
     }
   }
 
-  useEffect(() => {
+  useFocusEffect(() => {
     const fn = async () => {
       getMangaList()
     }
 
     fn()
-  }, [])
+  })
 
   const dismissSnackbar = () => setPortalSnackbarMessage(null)
 

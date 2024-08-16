@@ -11,7 +11,7 @@ import { User } from "@/models/User";
 export default function Home() {
   return (
     <Surface style={{flex: 1}}>
-      <Text>Home</Text>
+      <Text>Today's Manga</Text>
     </Surface>
   )
 }

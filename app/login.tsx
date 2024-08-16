@@ -49,13 +49,13 @@ export default function Login() {
           )
         }
         <TextInput
-          placeholder="Username"
+          label="Username"
           onChangeText={handleUsernameChangeText}
           value={username}
           error={sessionService?.hasError}
         />
         <TextInput
-          placeholder="Password"
+          label="Password"
           style={{marginBottom: 10}}
           right={<TextInput.Icon icon={showPassword ? "eye-off" : "eye"} onPress={handleVisibilityToggle} />}
           onChangeText={handlePasswordChangeText}
