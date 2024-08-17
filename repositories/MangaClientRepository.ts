@@ -7,6 +7,12 @@ interface MangaListOptions {
 }
 
 namespace MangaClientRepository {
+  export const listCondensed = async (): Promise<CondensedMangaResult[]> => {
+    const response = await axios.get(`${process.env.EXPO_PUBLIC_API_URL}/api/v1/crawl-targets`)
+    const crawlers = (response.data as any[]).map((data: any) => CondensedMangaResult.fromResponse(data))
+    return crawlers
+  }
+
   export const get = async (crawlTargetId: string) => {
     const response = await axios.get(`${process.env.EXPO_PUBLIC_API_URL}/api/v1/crawl-targets/${crawlTargetId}`, {
       params: {
@@ -17,11 +23,10 @@ namespace MangaClientRepository {
     return crawler
   }
 
-  export const search = async (query: string, userId: number, page: number, source: string) => {
+  export const search = async (query: string, page: number, source: string) => {
     const response = await axios.get(`${process.env.EXPO_PUBLIC_API_URL}/api/v1/crawl-targets/search`, {
       params: {
         query,
-        userId,
         page,
         source
       }
@@ -31,7 +36,9 @@ namespace MangaClientRepository {
   }
 
   export const list = async (options: MangaListOptions): Promise<Manga[]> => {
-    const response = await axios.get(`${process.env.EXPO_PUBLIC_API_URL}/api/v1/manga`)
+    const response = await axios.get(`${process.env.EXPO_PUBLIC_API_URL}/api/v1/manga`, {
+      params: options
+    })
     const manga = (response.data as any[]).map((data: any) => Manga.fromResponse(data))
     return manga
   }

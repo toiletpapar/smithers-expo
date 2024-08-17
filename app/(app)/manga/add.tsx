@@ -1,13 +1,8 @@
 import { MangaForm } from "@/components/manga/MangaForm";
-import { AppbarDefaultStack } from "@/components/nav/AppbarDefaultStack";
 import { CondensedMangaResult } from "@/models/CondensedMangaResult";
 import { MangaClientRepository } from "@/repositories/MangaClientRepository";
-import { AxiosError } from "axios";
-import { useGlobalSearchParams, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { useNavigation } from "expo-router";
 import { useState } from "react";
-import { View } from "react-native";
-import { Appbar, IconButton, List, Menu, Surface, TextInput, Text, Card, Button, HelperText } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Add() {
   const navigation = useNavigation()

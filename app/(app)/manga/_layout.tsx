@@ -8,7 +8,7 @@ export default function MangaLayout() {
       <Stack.Screen name="index" options={{ header: (props) => <AppbarManga {...props} />, title: "Manga" }} />
       <Stack.Screen name="add" options={{headerShown: false}} />
       <Stack.Screen name="edit/[crawlTargetId]" options={{headerShown: false}} />
-      <Stack.Screen name="search" options={{title: 'Search Manga'}} />
+      <Stack.Screen name="search" options={{headerShown: false}} />
     </Stack>
   );
 }

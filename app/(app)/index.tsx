@@ -1,12 +1,4 @@
-import { Splash } from "@/components/Splash";
-import { SessionClientRepository } from "@/repositories/SessionClientRepository";
-import { DrawerScreenProps } from "@react-navigation/drawer";
-import { useEffect, useState } from "react";
-import { View, Text, NativeSyntheticEvent, TextInputKeyPressEventData, TextInputChangeEventData } from "react-native";
-import { ActivityIndicator, Button, IconButton, Surface, TextInput, Title } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import * as SecureStore from 'expo-secure-store'
-import { User } from "@/models/User";
+import { Surface, Text } from "react-native-paper"
 
 export default function Home() {
   return (

@@ -1,9 +1,7 @@
-import { SessionClientRepository } from "@/repositories/SessionClientRepository";
 import { useState } from "react";
-import { View, Text, NativeSyntheticEvent, TextInputKeyPressEventData, TextInputChangeEventData } from "react-native";
-import { Avatar, Button, Card, IconButton, Surface, TextInput, Title } from "react-native-paper";
+import { View } from "react-native";
+import { Avatar, Button, Card, Surface, TextInput, Title } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import * as SecureStore from 'expo-secure-store'
 import { useSession } from "@/hooks/useSession";
 import { router } from "expo-router";
 

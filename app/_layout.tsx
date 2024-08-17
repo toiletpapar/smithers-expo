@@ -1,16 +1,9 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler"
-import { Drawer as NavDrawer } from 'expo-router/drawer'
-import { Drawer } from '@/components/nav/Drawer'
-import { PaperProvider, MD3DarkTheme, Icon } from 'react-native-paper'
-import { AppbarDefaultDrawer } from "@/components/nav/AppbarDefaultDrawer"
-import { AppbarManga } from "@/components/nav/AppbarManga"
-import { User } from "@/models/User"
+import { PaperProvider, MD3DarkTheme } from 'react-native-paper'
 import { useEffect, useState } from "react"
-import { SessionService, SessionContext } from "@/hooks/useSession"
+import { SessionContext } from "@/hooks/useSession"
 import { Session as SessionData } from "@/models/Session"
-import { Slot, SplashScreen, Stack } from "expo-router"
-import { Splash } from "@/components/Splash"
-import * as SecureStore from 'expo-secure-store'
+import { Slot } from "expo-router"
 import { LoginOptions, SessionClientRepository } from "@/repositories/SessionClientRepository"
 
 const theme = {

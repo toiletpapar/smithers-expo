@@ -1,15 +1,10 @@
 import { MangaForm } from "@/components/manga/MangaForm";
-import { AppbarDefaultStack } from "@/components/nav/AppbarDefaultStack";
 import { Splash } from "@/components/Splash";
 import { getAdapterOption } from "@/models/AdapterOption";
 import { CondensedMangaResult } from "@/models/CondensedMangaResult";
 import { MangaClientRepository } from "@/repositories/MangaClientRepository";
-import { AxiosError } from "axios";
-import { router, useGlobalSearchParams, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
-import { View } from "react-native";
-import { Appbar, IconButton, List, Menu, Surface, TextInput, Text, Card, Button, HelperText } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Edit() {
   const localParams = useLocalSearchParams()
