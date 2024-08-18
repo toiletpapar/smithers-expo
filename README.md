@@ -12,7 +12,7 @@ Created using `create-expo-app`
 2. Start the app
 
    ```bash
-    npx expo start
+    npm run dev
    ```
 
 In the output, you'll find options to open the app in a
