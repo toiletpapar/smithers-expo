@@ -1,10 +1,11 @@
 import { object, ObjectSchema, string } from "yup"
 import { Base64 } from "js-base64"
+import { Platform } from "react-native"
 
 interface ISession {
   userId: string
   username: string
-  sessionId: string
+  sessionId?: string
 }
 
 class Session {
@@ -12,7 +13,7 @@ class Session {
   public static scheme: ObjectSchema<ISession> = object({
     userId: string().required(),
     username: string().required(),
-    sessionId: string().required()
+    sessionId: Platform.OS === 'android' || Platform.OS === 'ios' ? string().required() : string().optional()
   }).required()
 
   constructor(data: ISession) {

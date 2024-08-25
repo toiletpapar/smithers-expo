@@ -31,7 +31,7 @@ export default function Login() {
         router.replace('/')
       }
     } catch (err) {
-      
+      console.log(err)
     }
   }
 

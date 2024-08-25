@@ -3,6 +3,7 @@ import { User } from "@/models/User"
 import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios"
 import * as SecureStore from 'expo-secure-store'
 import { UserClientRepository } from "./UserClientRepository"
+import { Platform } from "react-native"
 
 interface LoginOptions {
   username: string
@@ -18,16 +19,23 @@ namespace SessionClientRepository {
       axios.interceptors.request.eject(interceptorId)
     }
     interceptorId = axios.interceptors.request.use((config: InternalAxiosRequestConfig<any>) => {
-      config.headers.set('connect.sid', session.data.sessionId)
-      
+      if (Platform.OS === 'web') {
+        return {
+          ...config,
+          withCredentials: true
+        }
+      } else if (Platform.OS === 'android' || Platform.OS === 'ios') {
+        config.headers.set('connect.sid', session.data.sessionId)
+      }
+
       return config
     })
   }
 
   export const initializeSession = async (): Promise<Session | null> => {
     try {
-      // Retrieve user from device
-      const encodedSession = await SecureStore.getItemAsync('session')
+      // Retrieve user from device (on web, stored in cookie store)
+      const encodedSession = Platform.OS === 'android' || Platform.OS === 'ios' ? await SecureStore.getItemAsync('session') : null
       
       if (encodedSession) {
         const session = Session.deserialize(encodedSession)
@@ -56,8 +64,10 @@ namespace SessionClientRepository {
     const cookies = response.headers["set-cookie"]
     const session = await Session.fromResponse(response.data, cookies || [])
 
-    // Store session on device
-    await SecureStore.setItemAsync('session', session.serialize())
+    if (Platform.OS === 'android' || Platform.OS === 'ios') {
+      // Store session on device
+      await SecureStore.setItemAsync('session', session.serialize())
+    }
 
     // Setup automatic forwarding
     _setupInterceptor(session)
